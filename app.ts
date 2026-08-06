@@ -6,6 +6,9 @@ import userRoute from "./router/api/user";
 import clothesRoute from "./router/api/clothes";
 import outfitRoute from "./router/api/outfit";
 import wishlistRoute from "./router/api/wishlist";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 
@@ -14,9 +17,9 @@ app.use(express.json());
 
 app.use("/api", authRoute);
 app.use("/api", userRoute);
-app.use("/api", clothesRoute);
-app.use("/api", outfitRoute);
-app.use("/api", wishlistRoute);
+// app.use("/api", clothesRoute);
+// app.use("/api", outfitRoute);
+// app.use("/api", wishlistRoute);
 
 app.use(notFoundRoute);
 app.use(errorRoute);
