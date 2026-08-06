@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 
-export const contrlWrapper = (
-  fn: (req: Request, res: Response, next: NextFunction) => unknown,
+export const contrlWrapper = <T>(
+  fn: (req: Request<T>, res: Response, next: NextFunction) => unknown,
 ) => {
-  const func = async (req: Request, res: Response, next: NextFunction) => {
+  const func = async (req: Request<T>, res: Response, next: NextFunction) => {
     try {
       fn(req, res, next);
     } catch (error) {
