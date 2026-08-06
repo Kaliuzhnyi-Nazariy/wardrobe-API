@@ -11,6 +11,6 @@ export const errorRoute = (
   res: Response,
   next: NextFunction,
 ) => {
-  const { status = 500, message = "Error occured!" } = err;
+  const { status = 500, message = "Error occured" } = err;
   res.status(status).json({ message });
 };
