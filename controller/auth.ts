@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { contrlWrapper, errorHandler } from "../utils";
+import { contrlWrapper, cookieSettings, errorHandler } from "../utils";
 import service from "../service/auth";
 import { CustomRequest } from "../interfaces";
 
@@ -8,7 +8,9 @@ const signin = async (req: Request, res: Response, next: NextFunction) => {
 
   const result = await service.signin({ email, password });
 
-  res.status(200).json(result);
+  res.cookie("authToken", result, cookieSettings);
+
+  res.status(200).end();
 };
 
 const signup = async (req: Request, res: Response, next: NextFunction) => {
@@ -21,7 +23,9 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
     confirmPassword,
   });
 
-  res.status(201).json(result);
+  res.cookie("authToken", result, cookieSettings);
+
+  res.status(201).end();
 };
 
 const logout = async (
@@ -35,7 +39,9 @@ const logout = async (
 
   await service.logout({ id: user.id });
 
-  res.status(204).json();
+  res.clearCookie("authToken", cookieSettings);
+
+  res.status(204).end();
 };
 
 export default {

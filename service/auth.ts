@@ -24,12 +24,12 @@ if (!JWT_SECRET) {
 const signin = async ({ email, password }: SignIn) => {
   const isUser = await User.findOne({ email });
 
-  if (!isUser) return errorHandler(400, "Email or password is incorrect");
+  if (!isUser) throw errorHandler(400, "Email or password is incorrect");
 
   const isPasswordMatch = await bcrypt.compare(password, isUser.password);
 
   if (!isPasswordMatch)
-    return errorHandler(400, "Email or password is incorrect");
+    throw errorHandler(400, "Email or password is incorrect");
 
   const payload = {
     id: isUser.id,
@@ -52,10 +52,10 @@ const signin = async ({ email, password }: SignIn) => {
 const signup = async ({ email, password, name, confirmPassword }: SignUp) => {
   const isUser = await User.findOne({ email });
 
-  if (isUser) return errorHandler(409, "Email is in use");
+  if (isUser) throw errorHandler(409, "Email is in use");
 
   if (password !== confirmPassword) {
-    return errorHandler(400, "Passwords do not match");
+    throw errorHandler(400, "Passwords do not match");
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
