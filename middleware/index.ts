@@ -1,4 +1,5 @@
 import validate from "./validate";
 import isAuthenticated from "./authenticated";
+import upload from "./upload";
 
-export { validate, isAuthenticated };
+export { validate, isAuthenticated, upload };
