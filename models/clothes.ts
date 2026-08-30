@@ -34,6 +34,7 @@ const clothesSchema = new Schema(
       default: true,
       index: true,
     },
+    storeLink: String,
   },
   { versionKey: false, timestamps: true },
 );
