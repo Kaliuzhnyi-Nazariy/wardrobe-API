@@ -16,8 +16,11 @@ mongoose.set("strictQuery", true);
 mongoose
   .connect(MONGODB_URI)
   .then(() => {
-    app.listen(3001, () => {
-      console.log("Database connection successful");
+    // app.listen(3001, () => {
+    //   console.log("Database connection successful");
+    // });
+    app.listen(3001, "0.0.0.0", () => {
+      console.log(`Serwer działa na porcie ${3001}`);
     });
   })
   .catch((error: Error) => {
