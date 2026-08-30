@@ -7,8 +7,8 @@ import bcrypt from "bcryptjs";
 const getData = async (id: string) => {
   const [userData, clothesCount, outfitCount] = await Promise.all([
     User.findById(id).select("-password -token"),
-    Clothes.countDocuments({ owner: id }),
-    Outfit.countDocuments({ owner: id }),
+    Clothes.countDocuments({ owner: id, isOwned: true }),
+    Outfit.countDocuments({ owner: id, isOwned: true }),
   ]);
 
   if (!userData) {
