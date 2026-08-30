@@ -5,8 +5,9 @@ export const contrlWrapper = <T>(
 ) => {
   const func = async (req: Request<T>, res: Response, next: NextFunction) => {
     try {
-      fn(req, res, next);
+      await fn(req, res, next);
     } catch (error) {
+      console.log({ error });
       return next(error);
     }
   };
