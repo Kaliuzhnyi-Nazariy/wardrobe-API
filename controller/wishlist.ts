@@ -4,11 +4,23 @@ import service from "../service/wishlist";
 import { QueryFilter, Types } from "mongoose";
 import { SeasonsType, Size } from "../interfaces";
 
+export interface WishlistFilters {
+  ownerId: Types.ObjectId;
+  isOwned: boolean;
+  isClothes: boolean;
+  isOutfit: boolean;
+  name?: { $regex: string; $options: string };
+  color?: { $in: string[] };
+  season?: { $in: string[] };
+  size?: { $in: Size[] };
+  clothes?: { $in: Types.ObjectId[] };
+}
+
 const getWishlist = async (req: Request, res: Response, next: NextFunction) => {
   const id = getUser(req);
   const { clothes, outfit, clothesIds, season, color, name, size } = req.query;
 
-  console.log({ clothesIds });
+  // console.log({ clothesIds });
 
   // console.log({ name });
 
@@ -36,9 +48,10 @@ const getWishlist = async (req: Request, res: Response, next: NextFunction) => {
     name?: string;
     clothesIds?: Types.ObjectId[];
     isClothes?: boolean;
+    isOutfit?: boolean;
     isOwned?: boolean;
-    color?: string;
-    size?: Size;
+    color?: string[];
+    size?: Size[];
   }> = {
     ownerId: id,
     isClothes: isClothesSelected,
@@ -47,6 +60,13 @@ const getWishlist = async (req: Request, res: Response, next: NextFunction) => {
 
     // season: [],
   };
+
+  // const filters: WishlistFilters = {
+  //   ownerId: id as unknown as Types.ObjectId,
+  //   isClothes: isClothesSelected,
+  //   isOutfit: isOutfitSelected,
+  //   isOwned: false,
+  // };
 
   if (name && typeof name === "string") {
     filters.name = { $regex: name, $options: "i" };
@@ -60,13 +80,14 @@ const getWishlist = async (req: Request, res: Response, next: NextFunction) => {
     filters.color = { $in: colors };
   }
   if (season && typeof season == "string") {
-    const seasons = season.split(",");
-    filters.s = seasons;
+    const seasons = season.split(",") as SeasonsType[];
+    filters.season = { $in: seasons };
+    // filters.season = seasons;
   }
   if (size && typeof size === "string") {
     const sizes = size.split(",") as Size[];
-    console.log({ sizes });
-    filters.size = sizes;
+    // console.log({ sizes });
+    filters.size = { $in: sizes };
   }
 
   if (clothesIds && typeof clothesIds === "string") {
@@ -129,7 +150,8 @@ const updateOwnership = async (
 ) => {
   const id = getUser(req);
 
-  const clothesId = getParams(req, "clothesId", "Clothes item");
+  const clothesId = getParams(req, "itemId", "Item id");
+  console.log({ clothesId });
 
   const result = await service.updateOwnership(id, clothesId);
 
