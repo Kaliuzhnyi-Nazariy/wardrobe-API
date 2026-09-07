@@ -1,7 +1,7 @@
 import { Clothes } from "../models/clothes";
 import { Outfit } from "../models/outfit";
 import { User } from "../models/user";
-import { errorHandler } from "../utils";
+import { deleteAllPhotos, errorHandler } from "../utils";
 import bcrypt from "bcryptjs";
 
 const getData = async (id: string) => {
@@ -33,7 +33,7 @@ const updateUserData = async ({
       name,
       email,
     },
-    { new: true },
+    { returnDocument: "after" },
   ).select("-password -token");
 
   if (!user) {
@@ -64,11 +64,23 @@ const updatePassword = async ({
 };
 
 const deleteUser = async (id: string) => {
-  const user = await User.findByIdAndDelete(id);
+  // const user = await User.findByIdAndDelete(id);
+
+  // if (!user) {
+  //   throw errorHandler(404, "User not found");
+  // }
+
+  // return user;
+
+  const user = await User.findById(id);
 
   if (!user) {
     throw errorHandler(404, "User not found");
   }
+
+  await deleteAllPhotos({ userId: id });
+
+  await user.deleteOne();
 
   return user;
 };

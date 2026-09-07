@@ -1,6 +1,7 @@
 import { QueryFilter, Types } from "mongoose";
 import { SeasonsType } from "../interfaces";
 import { Outfit } from "../models/outfit";
+import { deleteAllPhotos } from "../utils";
 
 const getAllOutfits = async (
   filter: QueryFilter<{
@@ -88,6 +89,8 @@ const deleteOutfit = async ({ outfitId }: { outfitId: string }) => {
 };
 
 const deleteAllOutfits = async ({ userId }: { userId: string }) => {
+  await deleteAllPhotos({ userId, type: "outfit" });
+
   return await Outfit.deleteMany({ owner: userId });
 };
 
