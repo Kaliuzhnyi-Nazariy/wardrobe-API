@@ -28,8 +28,8 @@ router.put(
   ctrl.updateOutfitItem,
 );
 
-router.delete("/outfit/:outfitId", isAuthenticated, ctrl.deleteOutfitItem);
+router.delete("/outfit/all", isAuthenticated, ctrl.cleanOutfitStore);
 
-router.delete("/outfit", isAuthenticated, ctrl.cleanOutfitStore);
+router.delete("/outfit/:outfitId", isAuthenticated, ctrl.deleteOutfitItem);
 
 export default router;
