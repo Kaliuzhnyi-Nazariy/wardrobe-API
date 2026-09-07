@@ -79,7 +79,7 @@ const signup = async ({ email, password, name, confirmPassword }: SignUp) => {
 
 const logout = async ({ id }: { id: string }) => {
   await User.findByIdAndUpdate(
-    { id },
+    { _id: id },
     {
       token: null,
     },
