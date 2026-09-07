@@ -66,7 +66,7 @@ const addOutfitItem = async (
   const id = getUser(req);
   let image = "";
   if (req.file) {
-    image = await postPhoto(req.file);
+    image = await postPhoto({ file: req.file, userId: id, type: "outfit" });
   }
   const { name, clothes, season, isOwned } = req.body;
   // const { name } = req.body;
@@ -97,7 +97,7 @@ const updateOutfitItem = async (
 
   let image = "";
   if (req.file) {
-    image = await postPhoto(req.file);
+    image = await postPhoto({ file: req.file, userId: id, type: "outfit" });
   }
 
   const { name, clothes, season, sentImage } = req.body;
