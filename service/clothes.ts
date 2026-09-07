@@ -1,6 +1,7 @@
 import { QueryFilter, Types } from "mongoose";
 import { Clothes } from "../models/clothes";
-import { errorHandler } from "../utils";
+import { deleteAllPhotos, deletePhoto, errorHandler } from "../utils";
+import { SeasonsType } from "../interfaces";
 
 interface IAddClothesItem {
   name: string;
@@ -11,6 +12,7 @@ interface IAddClothesItem {
   size: "s" | "m" | "l" | "xl" | "2xl" | "3xl";
   isOwned: boolean;
   userId: string;
+  storeLink?: string;
 }
 
 interface IUpdateClothesItem extends IAddClothesItem {
@@ -26,7 +28,7 @@ interface IUpdateClothesItem extends IAddClothesItem {
 const getAll = async (
   filter: QueryFilter<{
     owner: Types.ObjectId;
-    season?: ("winter" | "spring" | "fall" | "summer")[];
+    season?: SeasonsType[];
     color?: string[];
     name?: string;
     isOwned?: boolean;
@@ -48,6 +50,7 @@ const addClothesItem = async ({
   size,
   isOwned,
   userId,
+  storeLink,
 }: IAddClothesItem) => {
   const newItem = await Clothes.create({
     name,
@@ -58,6 +61,7 @@ const addClothesItem = async ({
     size,
     isOwned,
     owner: userId,
+    storeLink,
   });
 
   if (!newItem) throw errorHandler(500);
@@ -72,10 +76,23 @@ const updateClothesItem = async (data: IUpdateClothesItem) => {
 };
 
 const deleteClothesItem = async (userId: string, clothesId: string) => {
-  return await Clothes.findOneAndDelete({ owner: userId, _id: clothesId });
+  // return await Clothes.findOneAndDelete({ owner: userId, _id: clothesId });
+  const clothesItem = await Clothes.findOne({ owner: userId, _id: clothesId });
+
+  if (!clothesItem) return errorHandler(404, "Item is not found");
+
+  if (clothesItem?.image) {
+    await deletePhoto(clothesItem.image);
+  }
+
+  await clothesItem.deleteOne();
+
+  return clothesItem;
 };
 
 const deleteAllClothes = async (userId: string) => {
+  await deleteAllPhotos({ userId, type: "clothes" });
+
   return await Clothes.deleteMany({ owner: userId });
 };
 

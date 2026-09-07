@@ -80,10 +80,10 @@ const addClothesItem = async (
   let image = "";
 
   if (req.file) {
-    image = await postPhoto(req.file);
+    image = await postPhoto({ file: req.file, userId: id, type: "clothes" });
   }
 
-  const { name, color, season, brand, size, isOwned } = req.body;
+  const { name, color, season, brand, size, isOwned, storeLink } = req.body;
 
   const result = await service.addClothesItem({
     name,
@@ -94,6 +94,7 @@ const addClothesItem = async (
     size,
     isOwned,
     userId: id,
+    storeLink,
   });
 
   res.status(201).json(result);
@@ -113,7 +114,7 @@ const updateClothesItem = async (
   let newImage = "";
 
   if (req.file) {
-    newImage = await postPhoto(req.file);
+    newImage = await postPhoto({ file: req.file, userId: id, type: "clothes" });
   }
   const result = await service.updateClothesItem({
     name,

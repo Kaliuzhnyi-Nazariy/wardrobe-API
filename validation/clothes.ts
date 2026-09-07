@@ -22,4 +22,5 @@ export const clothesItemValidation = z.object({
     (val) => val === "true" || val === true,
     z.boolean().default(true),
   ),
+  storeLink: z.string().optional(),
 });
