@@ -4,7 +4,7 @@ import { errorHandler } from "./errorHandler";
 import { getUser } from "./getUser";
 import { getParams } from "./getParams";
 import { cookieSettings } from "./cookieSettings";
-import { postPhoto, deletePhoto } from "./cloudinary";
+import { postPhoto, deletePhoto, deleteAllPhotos } from "./cloudinary";
 
 export {
   contrlWrapper,
@@ -15,4 +15,5 @@ export {
   cookieSettings,
   postPhoto,
   deletePhoto,
+  deleteAllPhotos,
 };
