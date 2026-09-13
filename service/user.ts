@@ -27,6 +27,10 @@ const updateUserData = async ({
   name: string;
   email: string;
 }) => {
+  const isUser = await User.findOne({ email, _id: { $ne: id } });
+
+  if (isUser) throw errorHandler(409, "Email is already in use");
+
   const user = await User.findByIdAndUpdate(
     id,
     {
