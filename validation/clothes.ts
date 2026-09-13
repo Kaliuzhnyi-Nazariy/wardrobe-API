@@ -4,7 +4,9 @@ export const clothesItemValidation = z.object({
   name: z.string().min(1),
   color: z.preprocess(
     (val) => (Array.isArray(val) ? val : val ? [val] : []),
-    z.array(z.string()),
+    z
+      .array(z.string())
+      .min(1, { message: "Should be added at least one color" }),
   ),
   season: z.preprocess(
     (val) => (Array.isArray(val) ? val : val ? [val] : []),

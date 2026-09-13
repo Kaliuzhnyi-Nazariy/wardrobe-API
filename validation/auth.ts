@@ -6,6 +6,10 @@ export const signinValidation = z.object({
     .string()
     .regex(
       /^(?=(?:.*[A-Z]){2})(?=(?:.*[a-z]){2})(?=(?:.*\d){2})(?=(?:.*[!@#$%^&*()_+\-=\[\]{};':",.<>?\\\/|`~]){2}).{8,}$/,
+      {
+        error:
+          "Password must be at least 8 characters long and include at least: 2 uppercase letters, 2 lowercase letters, 2 digits, and 2 special characters.",
+      },
     ),
 });
 
@@ -17,11 +21,19 @@ export const signupValidation = z
       .string()
       .regex(
         /^(?=(?:.*[A-Z]){2})(?=(?:.*[a-z]){2})(?=(?:.*\d){2})(?=(?:.*[!@#$%^&*()_+\-=\[\]{};':",.<>?\\\/|`~]){2}).{8,}$/,
+        {
+          error:
+            "Password must be at least 8 characters long and include at least: 2 uppercase letters, 2 lowercase letters, 2 digits, and 2 special characters.",
+        },
       ),
     confirmPassword: z
       .string()
       .regex(
         /^(?=(?:.*[A-Z]){2})(?=(?:.*[a-z]){2})(?=(?:.*\d){2})(?=(?:.*[!@#$%^&*()_+\-=\[\]{};':",.<>?\\\/|`~]){2}).{8,}$/,
+        {
+          error:
+            "Password must be at least 8 characters long and include at least: 2 uppercase letters, 2 lowercase letters, 2 digits, and 2 special characters.",
+        },
       ),
   })
   .refine((data) => data.password === data.confirmPassword, {
