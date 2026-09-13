@@ -38,8 +38,6 @@ const getAllOutfits = async (
     filter.isOwned = false;
   }
 
-  console.log(filter);
-
   const result = await service.getAllOutfits(filter);
 
   res.status(200).json(result);
