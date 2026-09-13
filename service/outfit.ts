@@ -13,7 +13,7 @@ const getAllOutfits = async (
 ) => {
   const data = await Outfit.find(filter).populate({
     path: "clothes",
-    select: "name",
+    select: "name isOwned",
   });
   return data;
 };
@@ -27,7 +27,7 @@ const getOutfitById = async ({
 }) => {
   const data = await Outfit.findOne({ owner: userId, _id: outfitId }).populate({
     path: "clothes",
-    select: "name",
+    select: "name isOwned",
   });
   return data;
 };
